@@ -6,7 +6,7 @@ import { List } from 'react-virtualized'
 const DropdownCheckboxWrapper = ({
   title = 'Наименование', //наименование фильтра
   checkbox = [], //знаячения фильтра, формат ['name1','name2',..]
-  setIsClear, //состояние кнопки сброса всех фильтров
+  setCount, //состояние кнопки сброса всех фильтров, bool
 }) => {
   const [visible, setVisible] = useState(false)
   const [checked, setChecked] = useState({})
@@ -14,13 +14,11 @@ const DropdownCheckboxWrapper = ({
 
   useEffect(() => {
     const btnClick = () => {
-      setChecked({})
-      setSubmitted({})
-      setIsClear(false)
-    }
-
-    if (Object.keys(submitted).length > 0) {
-      setIsClear(true)
+      if (Object.keys(submitted).length > 0) {
+        setSubmitted({})
+        setChecked({})
+        setCount([])
+      }
     }
 
     let btn = document.getElementById('reset')
@@ -28,18 +26,20 @@ const DropdownCheckboxWrapper = ({
     btn.addEventListener('click', btnClick)
 
     return () => btn.removeEventListener('click', btnClick)
-  }, [title, setIsClear, submitted])
+  }, [title, setCount, submitted])
 
   const onReset = useCallback(() => {
     setChecked({})
     setSubmitted({})
+    setCount((state) => state.filter((i) => i !== title))
     setVisible(false)
-  }, [])
+  }, [setCount, title])
 
   const onSubmit = useCallback(() => {
     setSubmitted(checked)
+    setCount((state) => [...state, title])
     setVisible(false)
-  }, [checked])
+  }, [checked, setCount, title])
 
   const onChange = useCallback(
     (value, index) => setChecked((state) => ({ ...state, [index]: value })),

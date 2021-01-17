@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button, Space } from 'antd'
 import axios from 'axios'
 
 import DropdownCheckboxWrapper from '../Common/DropdownCheckboxWrapper'
 
 export const Filters = () => {
-  const [isClear, setIsClear] = useState(false)
+  const [submitted, setSubmitted] = useState([])
   const [data, setData] = useState([])
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
@@ -24,32 +24,54 @@ export const Filters = () => {
       .then((r) => setComments(r.data))
   }, [])
 
-  console.log('loaded', isClear, posts, comments)
+  const todos_ = useMemo(() => {
+    return (
+      <DropdownCheckboxWrapper
+        setCount={setSubmitted}
+        title={'Todos'}
+        checkbox={data.map((i) => i.title)}
+      />
+    )
+  }, [data])
+
+  const posts_ = useMemo(() => {
+    return (
+      <DropdownCheckboxWrapper
+        setCount={setSubmitted}
+        title={'Posts'}
+        checkbox={posts.map((i) => i.title)}
+      />
+    )
+  }, [posts])
+
+  const comments_ = useMemo(() => {
+    return (
+      <DropdownCheckboxWrapper
+        setCount={setSubmitted}
+        title={'Comments'}
+        checkbox={comments.map((i) => i.name)}
+      />
+    )
+  }, [comments])
+
+  const districts_ = useMemo(() => {
+    return (
+      <DropdownCheckboxWrapper
+        setCount={setSubmitted}
+        title={'Районы'}
+        checkbox={districts}
+      />
+    )
+  }, [])
 
   return (
     <div style={{ width: '100%', padding: 10, display: 'flex' }}>
       <Space direction={'horizontal'}>
-        <DropdownCheckboxWrapper
-          setIsClear={setIsClear}
-          title={'Todos'}
-          checkbox={data.map((i) => i.title)}
-        />
-        <DropdownCheckboxWrapper
-          setIsClear={setIsClear}
-          title={'Posts'}
-          checkbox={posts.map((i) => i.title)}
-        />
-        <DropdownCheckboxWrapper
-          setIsClear={setIsClear}
-          title={'Comments'}
-          checkbox={comments.map((i) => i.name)}
-        />
-        <DropdownCheckboxWrapper
-          setIsClear={setIsClear}
-          title={'Районы'}
-          checkbox={districts}
-        />
-        <Button id='reset' hidden={!isClear}>
+        {todos_}
+        {posts_}
+        {comments_}
+        {districts_}
+        <Button id='reset' hidden={!submitted.length > 0}>
           Сбросить
         </Button>
       </Space>
