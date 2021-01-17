@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react'
-import { Checkbox, Button, Dropdown } from 'antd'
+import React, { useEffect, useMemo, useCallback, useState, useRef } from 'react'
+import { Checkbox, Button, Dropdown, Input } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { List } from 'react-virtualized'
 
@@ -7,17 +7,27 @@ const DropdownCheckboxWrapper = ({
   title = 'Наименование', //наименование фильтра
   checkbox = [], //знаячения фильтра, формат ['name1','name2',..]
   setCount, //состояние кнопки сброса всех фильтров, bool
+  isSearch = false, //доступность к поисковику
 }) => {
   const [visible, setVisible] = useState(false)
   const [checked, setChecked] = useState({})
   const [submitted, setSubmitted] = useState({})
+  const [filtered, setFiltered] = useState()
+  const inptRef = useRef(null)
 
   useEffect(() => {
     const btnClick = () => {
       if (Object.keys(submitted).length > 0) {
         setSubmitted({})
-        setChecked({})
         setCount([])
+        setFiltered()
+      }
+
+      if (Object.keys(checked).length > 0) {
+        setChecked({})
+      }
+      if (inptRef && inptRef.current) {
+        inptRef.current.state.value = ''
       }
     }
 
@@ -26,39 +36,63 @@ const DropdownCheckboxWrapper = ({
     btn.addEventListener('click', btnClick)
 
     return () => btn.removeEventListener('click', btnClick)
-  }, [title, setCount, submitted])
+  }, [title, setCount, submitted, checked])
 
   const onReset = useCallback(() => {
     setChecked({})
     setSubmitted({})
     setCount((state) => state.filter((i) => i !== title))
     setVisible(false)
+    setFiltered()
+
+    if (inptRef && inptRef.current) {
+      inptRef.current.state.value = ''
+    }
   }, [setCount, title])
 
   const onSubmit = useCallback(() => {
     setSubmitted(checked)
     setCount((state) => [...state, title])
     setVisible(false)
+    setFiltered()
+
+    if (inptRef && inptRef.current) {
+      inptRef.current.state.value = ''
+    }
   }, [checked, setCount, title])
 
   const onChange = useCallback(
-    (value, index) => setChecked((state) => ({ ...state, [index]: value })),
+    (checked, value, index) =>
+      setChecked((state) => ({ ...state, [index]: { value, checked } })),
     []
   )
 
+  const onSearch = useCallback(
+    (e) => {
+      setFiltered(checkbox.filter((i) => i.includes(e.target.value)))
+    },
+    [checkbox]
+  )
+
   const menu = useMemo(() => {
-    const list = checkbox.map((d, index) => (
+    let data = filtered ? filtered : checkbox
+    const list = data.map((value, index) => (
       <Checkbox
         key={`${title}-${index}`}
-        checked={checked[index] ? true : false}
-        onChange={(e) => onChange(e.target.checked, index)}
+        checked={checked[index] ? checked[index].checked : false}
+        onChange={(e) => onChange(e.target.checked, value, index)}
         style={{ margin: 5 }}
       >
-        {d.slice(0, 25)}
+        {value.slice(0, 25)}
       </Checkbox>
     ))
     return (
-      <div style={{ backgroundColor: '#fff' }}>
+      <div style={{ backgroundColor: '#fff', paddingTop: 5 }}>
+        {isSearch && (
+          <div style={{ margin: 5 }}>
+            <Input onChange={onSearch} ref={inptRef} />
+          </div>
+        )}
         <List
           width={230}
           height={300}
@@ -96,7 +130,18 @@ const DropdownCheckboxWrapper = ({
         </div>
       </div>
     )
-  }, [title, checkbox, checked, submitted, onChange, onReset, onSubmit])
+  }, [
+    title,
+    isSearch,
+    checkbox,
+    filtered,
+    checked,
+    submitted,
+    onSearch,
+    onChange,
+    onReset,
+    onSubmit,
+  ])
 
   return (
     <Dropdown

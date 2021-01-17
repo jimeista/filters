@@ -30,6 +30,7 @@ export const Filters = () => {
         setCount={setSubmitted}
         title={'Todos'}
         checkbox={data.map((i) => i.title)}
+        isSearch={true}
       />
     )
   }, [data])
