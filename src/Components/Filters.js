@@ -5,15 +5,17 @@ import axios from 'axios'
 import DropdownCheckboxWrapper from '../Common/DropdownCheckboxWrapper'
 
 export const Filters = () => {
-  const [submitted, setSubmitted] = useState([])
-  const [data, setData] = useState([])
+  //состояние значении примененных фильтров
+  const [list, setList] = useState({})
+  // данные чекбоксов фильтра
+  const [todos, setTodos] = useState([])
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
 
   useEffect(() => {
     axios
       .get('https://jsonplaceholder.typicode.com/todos')
-      .then((r) => setData(r.data))
+      .then((r) => setTodos(r.data))
 
     axios
       .get('https://jsonplaceholder.typicode.com/posts')
@@ -27,27 +29,25 @@ export const Filters = () => {
   const todos_ = useMemo(() => {
     return (
       <DropdownCheckboxWrapper
-        setCount={setSubmitted}
+        setList={setList}
         title={'Todos'}
-        checkbox={data.map((i) => ({
+        checkbox={todos.map((i) => ({
           name: i.title,
           disabled: false,
-          checked: false,
         }))}
         isSearch={true}
       />
     )
-  }, [data])
+  }, [todos])
 
   const posts_ = useMemo(() => {
     return (
       <DropdownCheckboxWrapper
-        setCount={setSubmitted}
+        setList={setList}
         title={'Posts'}
         checkbox={posts.map((i) => ({
           name: i.title,
           disabled: false,
-          checked: false,
         }))}
       />
     )
@@ -56,12 +56,11 @@ export const Filters = () => {
   const comments_ = useMemo(() => {
     return (
       <DropdownCheckboxWrapper
-        setCount={setSubmitted}
+        setList={setList}
         title={'Comments'}
         checkbox={comments.map((i) => ({
           name: i.name,
           disabled: false,
-          checked: false,
         }))}
         isSearch={true}
       />
@@ -71,9 +70,9 @@ export const Filters = () => {
   const districts_ = useMemo(() => {
     return (
       <DropdownCheckboxWrapper
-        setCount={setSubmitted}
         title={'Районы'}
         checkbox={districts}
+        setList={setList}
         isLimit={true}
         limit={3}
       />
@@ -87,7 +86,12 @@ export const Filters = () => {
         {posts_}
         {comments_}
         {districts_}
-        <Button id='reset' hidden={!submitted.length > 0}>
+        <Button
+          id='reset'
+          hidden={
+            !Object.values(list).filter((arr) => arr.length > 0).length > 0
+          }
+        >
           Сбросить
         </Button>
       </Space>

@@ -6,7 +6,7 @@ import { List } from 'react-virtualized'
 const DropdownCheckboxWrapper = ({
   title = 'Наименование', //наименование фильтра
   checkbox = [], //знаячения фильтра, формат ['name1','name2',..]
-  setCount, //состояние кнопки сброса всех фильтров, bool
+  setList, //состояние списка примененных фильтров
   isSearch = false, //доступность к поисковику
   isLimit = false, //лимит на отметку чекбоксов
   limit = 5, //количество доступных к отметке чекбоксов
@@ -22,7 +22,7 @@ const DropdownCheckboxWrapper = ({
       //сброс сохраненных значении чекбоксов
       if (Object.keys(submitted).length > 0) {
         setSubmitted({})
-        setCount([])
+        setList((state) => (Object.values(state).length > 0 ? {} : state))
         setFiltered()
       }
 
@@ -40,36 +40,40 @@ const DropdownCheckboxWrapper = ({
     btn.addEventListener('click', btnClick)
 
     return () => btn.removeEventListener('click', btnClick)
-  }, [title, setCount, submitted, checked])
+  }, [title, submitted, checked, setList])
 
   //реализация кнопки сброса фильтра
   const onReset = useCallback(() => {
     setChecked({})
     setSubmitted({})
-    setCount((state) => state.filter((i) => i !== title)) //сбрасываем значение этого фильтра
     setVisible(false)
     setFiltered()
+
+    setList((state) => ({ ...state, [title]: [] }))
 
     if (inptRef && inptRef.current) {
       inptRef.current.state.value = ''
     }
-  }, [setCount, title])
+  }, [title, setList])
 
   //реализация кнопки применения фильтра
   const onSubmit = useCallback(() => {
     setSubmitted(checked)
-    //добавляем значение этого фильтра в родительсоке состояние
-    //или убираем значения если хотим авторучно сбросить отмеченные значения
-    Object.values(checked).filter((i) => i.checked).length > 0
-      ? setCount((state) => [...state, title])
-      : setCount((state) => state.filter((name) => name !== title))
+
+    //отправка отмеченных значении родителю
+    setList((state) => ({
+      ...state,
+      [title]: Object.values(checked)
+        .filter((i) => i.checked)
+        .map((i) => i.value),
+    }))
     setVisible(false)
     setFiltered()
 
     if (inptRef && inptRef.current) {
       inptRef.current.state.value = ''
     }
-  }, [checked, setCount, title])
+  }, [checked, title, setList])
 
   //реализация изменения чекбокса
   const onChange = useCallback((checked, value, index) => {
@@ -109,6 +113,7 @@ const DropdownCheckboxWrapper = ({
         ? list.sort((a, b) => b.props.checked - a.props.checked)
         : list
 
+    // проверка на лимит отметки чекбоксов
     list = isLimit ? limitCheckbox(list, limit) : list
 
     return (
