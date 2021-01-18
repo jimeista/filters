@@ -29,7 +29,11 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Todos'}
-        checkbox={data.map((i) => ({ name: i.title, disabled: false }))}
+        checkbox={data.map((i) => ({
+          name: i.title,
+          disabled: false,
+          checked: false,
+        }))}
         isSearch={true}
       />
     )
@@ -40,7 +44,11 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Posts'}
-        checkbox={posts.map((i) => ({ name: i.title, disabled: false }))}
+        checkbox={posts.map((i) => ({
+          name: i.title,
+          disabled: false,
+          checked: false,
+        }))}
       />
     )
   }, [posts])
@@ -50,7 +58,11 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Comments'}
-        checkbox={comments.map((i) => ({ name: i.name, disabled: false }))}
+        checkbox={comments.map((i) => ({
+          name: i.name,
+          disabled: false,
+          checked: false,
+        }))}
         isSearch={true}
       />
     )
@@ -62,6 +74,8 @@ export const Filters = () => {
         setCount={setSubmitted}
         title={'Районы'}
         checkbox={districts}
+        isLimit={true}
+        limit={3}
       />
     )
   }, [])
@@ -83,12 +97,12 @@ export const Filters = () => {
 
 // дефолтные опции дропдауна
 let districts = [
-  { name: 'Алатауский район', disabled: false },
-  { name: 'Алмалинский район', disabled: false },
-  { name: 'Ауэзовский район', disabled: false },
-  { name: 'Бостандыкский район', disabled: false },
-  { name: 'Жетысуский район', disabled: false },
-  { name: 'Медеуский район', disabled: false },
-  { name: 'Наурызбайский район', disabled: true },
-  { name: 'Турксибский район', disabled: true },
+  { name: 'Алатауский район', disabled: false, checked: false },
+  { name: 'Алмалинский район', disabled: false, checked: false },
+  { name: 'Ауэзовский район', disabled: false, checked: false },
+  { name: 'Бостандыкский район', disabled: false, checked: false },
+  { name: 'Жетысуский район', disabled: false, checked: false },
+  { name: 'Медеуский район', disabled: false, checked: false },
+  { name: 'Наурызбайский район', disabled: true, checked: false },
+  { name: 'Турксибский район', disabled: true, checked: false },
 ]

@@ -8,6 +8,8 @@ const DropdownCheckboxWrapper = ({
   checkbox = [], //знаячения фильтра, формат ['name1','name2',..]
   setCount, //состояние кнопки сброса всех фильтров, bool
   isSearch = false, //доступность к поисковику
+  isLimit = false, //лимит на отметку чекбоксов
+  limit = 5, //количество доступных к отметке чекбоксов
 }) => {
   const [visible, setVisible] = useState(false) //состояние dropdown открыто закрыто
   const [checked, setChecked] = useState({}) //состояние чекбоксов при onChange методе
@@ -70,14 +72,12 @@ const DropdownCheckboxWrapper = ({
   }, [checked, setCount, title])
 
   //реализация изменения чекбокса
-  const onChange = useCallback(
-    (checked, value, index) =>
-      setChecked((state) => ({
-        ...state,
-        [index]: { value: value.name, checked, disabled: value.disabled },
-      })),
-    []
-  )
+  const onChange = useCallback((checked, value, index) => {
+    setChecked((state) => ({
+      ...state,
+      [index]: { value: value.name, checked, disabled: value.disabled },
+    }))
+  }, [])
 
   //реализация поисковика
   const onSearch = useCallback(
@@ -103,7 +103,14 @@ const DropdownCheckboxWrapper = ({
       </Checkbox>
     ))
 
-    list = list.sort((a, b) => b.props.checked - a.props.checked)
+    //моментальная сортировка отмеченных значении чекбокса
+    list =
+      list.length > 10
+        ? list.sort((a, b) => b.props.checked - a.props.checked)
+        : list
+
+    list = isLimit ? limitCheckbox(list, limit) : list
+
     return (
       <div style={{ backgroundColor: '#fff', paddingTop: 5 }}>
         {/* поисковик */}
@@ -166,6 +173,8 @@ const DropdownCheckboxWrapper = ({
   }, [
     title,
     isSearch,
+    isLimit,
+    limit,
     checkbox,
     submitted,
     filtered,
@@ -195,3 +204,16 @@ const DropdownCheckboxWrapper = ({
 }
 
 export default React.memo(DropdownCheckboxWrapper)
+
+const limitCheckbox = (data, limit) => {
+  let count = data.filter((i) => i.props.checked).length
+
+  if (count === limit) {
+    return data.map((i) => ({
+      ...i,
+      props: { ...i.props, disabled: i.props.checked ? false : true },
+    }))
+  } else {
+    return data
+  }
+}
