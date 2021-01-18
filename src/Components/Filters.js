@@ -29,7 +29,7 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Todos'}
-        checkbox={data.map((i) => i.title)}
+        checkbox={data.map((i) => ({ name: i.title, disabled: false }))}
         isSearch={true}
       />
     )
@@ -40,7 +40,7 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Posts'}
-        checkbox={posts.map((i) => i.title)}
+        checkbox={posts.map((i) => ({ name: i.title, disabled: false }))}
       />
     )
   }, [posts])
@@ -50,7 +50,8 @@ export const Filters = () => {
       <DropdownCheckboxWrapper
         setCount={setSubmitted}
         title={'Comments'}
-        checkbox={comments.map((i) => i.name)}
+        checkbox={comments.map((i) => ({ name: i.name, disabled: false }))}
+        isSearch={true}
       />
     )
   }, [comments])
@@ -82,12 +83,12 @@ export const Filters = () => {
 
 // дефолтные опции дропдауна
 let districts = [
-  'Алатауский район',
-  'Алмалинский район',
-  'Ауэзовский район',
-  'Бостандыкский район',
-  'Жетысуский район',
-  'Медеуский район',
-  'Наурызбайский район',
-  'Турксибский район',
+  { name: 'Алатауский район', disabled: false },
+  { name: 'Алмалинский район', disabled: false },
+  { name: 'Ауэзовский район', disabled: false },
+  { name: 'Бостандыкский район', disabled: false },
+  { name: 'Жетысуский район', disabled: false },
+  { name: 'Медеуский район', disabled: false },
+  { name: 'Наурызбайский район', disabled: true },
+  { name: 'Турксибский район', disabled: true },
 ]
