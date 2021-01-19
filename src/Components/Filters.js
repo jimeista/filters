@@ -27,20 +27,6 @@ export const Filters = () => {
       .then((r) => setComments(r.data))
   }, [])
 
-  const todos_ = useMemo(() => {
-    return (
-      <DropdownCheckboxWrapper
-        setList={setList}
-        title={'Todos'}
-        checkbox={todos.map((i) => ({
-          name: i.title,
-          disabled: false,
-        }))}
-        isSearch={true}
-      />
-    )
-  }, [todos])
-
   const posts_ = useMemo(() => {
     return (
       <DropdownCheckboxWrapper
@@ -80,31 +66,25 @@ export const Filters = () => {
     )
   }, [])
 
-  const radio_ = useMemo(() => {
+  const todos_ = useMemo(() => {
     return (
       <DropdownRadioWrapper
-        title={'Радио кнопки'}
-        radiobox={['name 1', 'name 2']}
+        title={'Радио кнопки Todos'}
+        radiobox={todos.map((i) => ({ name: i.title, disabled: false }))}
         setList={setList}
         isSearch={true}
       />
     )
-  }, [])
+  }, [todos])
 
   return (
     <div style={{ width: '100%', padding: 10, display: 'flex' }}>
       <Space direction={'horizontal'}>
-        {/* {todos_} */}
         {posts_}
         {comments_}
         {districts_}
-        {radio_}
-        <Button
-          id='reset'
-          hidden={
-            !Object.values(list).filter((arr) => arr.length > 0).length > 0
-          }
-        >
+        {todos_}
+        <Button id='reset' hidden={!Object.values(list).length > 0}>
           Сбросить
         </Button>
       </Space>

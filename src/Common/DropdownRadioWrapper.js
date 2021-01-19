@@ -18,7 +18,7 @@ const DropdownRadioWrapper = ({
     const btnClick = () => {
       //сброс отмеченных,но не сохраненных значении радио кнопок
       if (checked) {
-        setList((state) => ({ ...state, [title]: [] }))
+        setList((state) => (Object.values(state).length > 0 ? {} : state))
         setChecked(null)
       }
     }
@@ -71,9 +71,14 @@ const DropdownRadioWrapper = ({
     let data = filtered ? filtered : radiobox
 
     // список радио кнопок
-    let list = data.map((value) => (
-      <Radio value={value} key={value}>
-        {value}
+    let list = data.map((i) => (
+      <Radio
+        value={i.name}
+        disabled={i.disabled}
+        key={i.name}
+        // style={{ width: 190 }}
+      >
+        {i.name.slice(0, 25)}
       </Radio>
     ))
 
@@ -91,23 +96,25 @@ const DropdownRadioWrapper = ({
           </div>
         )}
         {/* виртуальный список */}
-        <List
-          width={230}
-          height={300}
-          rowCount={list.length}
-          rowHeight={30}
-          rowRenderer={({ key, index, isScrolling, isVisible, style }) => (
-            <Radio.Group
-              name={'radiogroup'}
-              value={checked}
-              onChange={onChange}
-              key={key}
-              style={{ display: 'flex', padding: 5 }}
-            >
-              {list[index]}
-            </Radio.Group>
-          )}
-        />
+        <Radio.Group
+          name={'radiogroup'}
+          value={checked}
+          onChange={onChange}
+          style={{ display: 'flex', padding: 5, width: 230 }}
+        >
+          <List
+            width={230}
+            height={300}
+            rowCount={list.length}
+            rowHeight={30}
+            rowRenderer={({ key, index, isScrolling, isVisible, style }) => (
+              <div key={key} style={style}>
+                {list[index]}
+              </div>
+            )}
+          />
+        </Radio.Group>
+
         {/* кнопки сброса и применения */}
         <div
           key={'dropdown-btn'}

@@ -45,7 +45,10 @@ const DropdownCheckboxWrapper = ({
     setVisible(false)
     setFiltered()
 
-    setList((state) => ({ ...state, [title]: [] }))
+    setList((state) => {
+      delete state[title]
+      return { ...state }
+    })
 
     if (inptRef && inptRef.current) {
       inptRef.current.state.value = ''
