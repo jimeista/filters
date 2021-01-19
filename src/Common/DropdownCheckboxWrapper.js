@@ -42,7 +42,6 @@ const DropdownCheckboxWrapper = ({
   const onReset = useCallback(() => {
     setChecked({})
     setSubmitted({})
-    setVisible(false)
     setFiltered()
 
     setList((state) => {
