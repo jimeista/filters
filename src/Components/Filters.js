@@ -3,6 +3,7 @@ import { Button, Space } from 'antd'
 import axios from 'axios'
 
 import DropdownCheckboxWrapper from '../Common/DropdownCheckboxWrapper'
+import DropdownRadioWrapper from '../Common/DropdownRadioWrapper'
 
 export const Filters = () => {
   //состояние значении примененных фильтров
@@ -79,13 +80,25 @@ export const Filters = () => {
     )
   }, [])
 
+  const radio_ = useMemo(() => {
+    return (
+      <DropdownRadioWrapper
+        title={'Радио кнопки'}
+        radiobox={['name 1', 'name 2']}
+        setList={setList}
+        isSearch={true}
+      />
+    )
+  }, [])
+
   return (
     <div style={{ width: '100%', padding: 10, display: 'flex' }}>
       <Space direction={'horizontal'}>
-        {todos_}
+        {/* {todos_} */}
         {posts_}
         {comments_}
         {districts_}
+        {radio_}
         <Button
           id='reset'
           hidden={

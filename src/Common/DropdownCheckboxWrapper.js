@@ -5,7 +5,7 @@ import { List } from 'react-virtualized'
 
 const DropdownCheckboxWrapper = ({
   title = 'Наименование', //наименование фильтра
-  checkbox = [], //знаячения фильтра, формат ['name1','name2',..]
+  checkbox = [], //знаячения фильтра
   setList, //состояние списка примененных фильтров
   isSearch = false, //доступность к поисковику
   isLimit = false, //лимит на отметку чекбоксов
@@ -29,10 +29,6 @@ const DropdownCheckboxWrapper = ({
       //сброс отмеченных,но не сохраненных значении чекбоксов
       if (Object.keys(checked).length > 0) {
         setChecked({})
-      }
-      //сброс поля поисковика
-      if (inptRef && inptRef.current) {
-        inptRef.current.state.value = ''
       }
     }
 
@@ -79,7 +75,7 @@ const DropdownCheckboxWrapper = ({
   const onChange = useCallback((checked, value, index) => {
     setChecked((state) => ({
       ...state,
-      [index]: { value: value.name, checked, disabled: value.disabled },
+      [value.name]: { value: value.name, checked, disabled: value.disabled },
     }))
   }, [])
 
@@ -90,15 +86,15 @@ const DropdownCheckboxWrapper = ({
     },
     [checkbox]
   )
-
   // меню дропдауна
   const menu = useMemo(() => {
     let data = filtered ? filtered : checkbox
+
     // список чекбоксов
     let list = data.map((i, index) => (
       <Checkbox
         key={`${title}-${index}`}
-        checked={checked[index] ? checked[index].checked : false}
+        checked={checked[i.name] ? checked[i.name].checked : false}
         onChange={(e) => onChange(e.target.checked, i, index)}
         style={{ margin: 5 }}
         disabled={i.disabled}
@@ -197,6 +193,11 @@ const DropdownCheckboxWrapper = ({
       visible={visible}
       onVisibleChange={(val) => {
         setVisible(val)
+        //сброс поля поисковика
+        if (inptRef && inptRef.current && inptRef.current.state) {
+          setFiltered()
+          inptRef.current.state.value = ''
+        }
       }}
       className='ant_drop_menu'
     >
