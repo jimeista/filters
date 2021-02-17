@@ -1,15 +1,3 @@
 .App {
   text-align: center;
 }
-
-.ant_drop_btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 230px;
-  border-radius: 2px;
-  color: white;
-  background: inherit;
-  border-color: rgba(255, 255, 255, 0.5);
-}

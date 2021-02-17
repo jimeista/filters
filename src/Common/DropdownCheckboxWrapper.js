@@ -1,21 +1,26 @@
 import React, { useEffect, useMemo, useCallback, useState, useRef } from 'react'
 import { Checkbox, Button, Dropdown, Input } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { DownOutlined } from '@ant-design/icons';
 import { List } from 'react-virtualized'
-
+import './filters.css'
 const DropdownCheckboxWrapper = ({
+  handleReset = () => {},
   title = 'Наименование', //наименование фильтра
   checkbox = [], //знаячения фильтра
   setList, //состояние списка примененных фильтров
   isSearch = false, //доступность к поисковику
   isLimit = false, //лимит на отметку чекбоксов
   limit = 5, //количество доступных к отметке чекбоксов
+  width = 230,
+  height = 300,
+  rowHeight = 30,
 }) => {
   const [visible, setVisible] = useState(false) //состояние dropdown открыто закрыто
   const [checked, setChecked] = useState({}) //состояние чекбоксов при onChange методе
   const [submitted, setSubmitted] = useState({}) //состояние сохраненых чекбоксов
   const [filtered, setFiltered] = useState() //состояние фильтрованных чекбоксов при поисковике
   const inptRef = useRef(null) //ссылка к dom элементу поисковика
+
 
   useEffect(() => {
     const btnClick = () => {
@@ -33,9 +38,9 @@ const DropdownCheckboxWrapper = ({
     }
 
     let btn = document.getElementById('reset')
-    btn.addEventListener('click', btnClick)
+    btn && btn.addEventListener('click', btnClick)
 
-    return () => btn.removeEventListener('click', btnClick)
+    return () =>btn && btn.removeEventListener('click', btnClick)
   }, [title, submitted, checked, setList])
 
   //реализация кнопки сброса фильтра
@@ -52,19 +57,34 @@ const DropdownCheckboxWrapper = ({
     if (inptRef && inptRef.current) {
       inptRef.current.state.value = ''
     }
-  }, [title, setList])
+    handleReset()
+  }, [title, setList, handleReset])
+
+  // useEffect(() => {
+  //   console.log(checked, submitted)
+  // }, [checked, submitted])
 
   //реализация кнопки применения фильтра
   const onSubmit = useCallback(() => {
     setSubmitted(checked)
 
     //отправка отмеченных значении родителю
-    setList((state) => ({
-      ...state,
-      [title]: Object.values(checked)
+    setList((state) => {
+      let arr = Object.values(checked)
         .filter((i) => i.checked)
-        .map((i) => i.value),
-    }))
+        .map((i) => i.value)
+
+      let ob = { ...state }
+      if (arr.length > 0) {
+        ob = {
+          ...state,
+          [title]: arr,
+        }
+      } else {
+        delete ob[title]
+      }
+      return ob
+    })
     setVisible(false)
     setFiltered()
 
@@ -95,6 +115,7 @@ const DropdownCheckboxWrapper = ({
     // список чекбоксов
     let list = data.map((i, index) => (
       <Checkbox
+          className={`Filter_Items_Style`}
         key={`${title}-${index}`}
         checked={checked[i.name] ? checked[i.name].checked : false}
         onChange={(e) => onChange(e.target.checked, i, index)}
@@ -115,7 +136,8 @@ const DropdownCheckboxWrapper = ({
     list = isLimit ? limitCheckbox(list, limit) : list
 
     return (
-      <div style={{ backgroundColor: '#fff', paddingTop: 5 }}>
+      <div
+      className={`Filter_Checkbox_Container_Style`}>
         {/* поисковик */}
         {isSearch && (
           <div style={{ margin: 5 }}>
@@ -124,17 +146,20 @@ const DropdownCheckboxWrapper = ({
               ref={inptRef}
               placeholder={'Поиск'}
               allowClear
+              className={`Filter_Input_Item_Style`}
             />
           </div>
         )}
         {/* виртуальный список */}
         <List
-          width={230}
-          height={300}
+            className={`Filter_List_Item_Style`}
+          width={width}
+          height={height}
           rowCount={list.length}
-          rowHeight={30}
+          rowHeight={rowHeight}
           rowRenderer={({ key, index, isScrolling, isVisible, style }) => (
-            <div key={key} style={style}>
+            <div key={key} className={`Filter_List_Item_Style_inner`}>
+
               {/* {isScrolling ? '...' : list[index]} */}
               {list[index]}
             </div>
@@ -142,14 +167,12 @@ const DropdownCheckboxWrapper = ({
         />
         {/* кнопки сброса и применения */}
         <div
+            className={`Filter_Btn_Style_Box`}
           key={'dropdown-btn'}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: 5,
-          }}
+
         >
           <Button
+              className={`Filter_Btn_Item_Style`}
             type='primary'
             onClick={onReset}
             hidden={
@@ -178,6 +201,9 @@ const DropdownCheckboxWrapper = ({
     isSearch,
     isLimit,
     limit,
+    height,
+    rowHeight,
+    width,
     checkbox,
     submitted,
     filtered,
@@ -189,25 +215,32 @@ const DropdownCheckboxWrapper = ({
   ])
 
   return (
-    <Dropdown
-      overlay={menu}
-      trigger={['click']}
-      visible={visible}
-      onVisibleChange={(val) => {
-        setVisible(val)
-        //сброс поля поисковика
-        if (inptRef && inptRef.current && inptRef.current.state) {
-          setFiltered()
-          inptRef.current.state.value = ''
-        }
-      }}
-      className='ant_drop_menu'
-    >
-      <Button className='ant_drop_btn'>
-        {title}
-        <DownOutlined />
-      </Button>
-    </Dropdown>
+      <div className={`Dropdown_style`}>
+        <Dropdown
+          overlay={menu}
+
+          trigger={['click']}
+          visible={visible}
+          onVisibleChange={(val) => {
+            setVisible(val)
+            //сброс поля поисковика
+            if (inptRef && inptRef.current && inptRef.current.state) {
+              setFiltered()
+              inptRef.current.state.value = ''
+            }
+          }}
+
+          overlayClassName={`Filter_Dropdown_Style`}
+      >
+        <Button
+            className={`Filter_Main_Btn_Style`}
+
+        >
+          {title}
+          <DownOutlined/>
+        </Button>
+      </Dropdown>
+      </div>
   )
 }
 

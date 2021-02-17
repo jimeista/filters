@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import DropdownCheckboxWrapper from '../Common/DropdownCheckboxWrapper'
 import DropdownRadioWrapper from '../Common/DropdownRadioWrapper'
+import DropdownPeriodWrapper from '../Common/DropdownPeriodWrapper'
 
 export const Filters = () => {
   //состояние значении примененных фильтров
@@ -12,6 +13,8 @@ export const Filters = () => {
   const [todos, setTodos] = useState([])
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
+
+  console.log(list)
 
   useEffect(() => {
     axios
@@ -36,6 +39,7 @@ export const Filters = () => {
           name: i.title,
           disabled: false,
         }))}
+        handleReset={() => {}}
       />
     )
   }, [posts])
@@ -50,6 +54,7 @@ export const Filters = () => {
           disabled: false,
         }))}
         isSearch={true}
+        handleReset={() => {}}
       />
     )
   }, [comments])
@@ -62,6 +67,7 @@ export const Filters = () => {
         setList={setList}
         isLimit={true}
         limit={3}
+        handleReset={() => {}}
       />
     )
   }, [])
@@ -73,6 +79,7 @@ export const Filters = () => {
         radiobox={todos.map((i) => ({ name: i.title, disabled: false }))}
         setList={setList}
         isSearch={true}
+        handleReset={() => {}}
       />
     )
   }, [todos])
@@ -80,6 +87,7 @@ export const Filters = () => {
   return (
     <div style={{ width: '100%', padding: 10, display: 'flex' }}>
       <Space direction={'horizontal'}>
+        <DropdownPeriodWrapper setList={setList} slider={true} />
         {posts_}
         {comments_}
         {districts_}
@@ -94,12 +102,12 @@ export const Filters = () => {
 
 // дефолтные опции дропдауна
 let districts = [
-  { name: 'Алатауский район', disabled: false, checked: false },
-  { name: 'Алмалинский район', disabled: false, checked: false },
-  { name: 'Ауэзовский район', disabled: false, checked: false },
-  { name: 'Бостандыкский район', disabled: false, checked: false },
-  { name: 'Жетысуский район', disabled: false, checked: false },
-  { name: 'Медеуский район', disabled: false, checked: false },
-  { name: 'Наурызбайский район', disabled: true, checked: false },
-  { name: 'Турксибский район', disabled: true, checked: false },
+  { name: 'Алатауский район', disabled: false },
+  { name: 'Алмалинский район', disabled: false },
+  { name: 'Ауэзовский район', disabled: false },
+  { name: 'Бостандыкский район', disabled: false },
+  { name: 'Жетысуский район', disabled: false },
+  { name: 'Медеуский район', disabled: false },
+  { name: 'Наурызбайский район', disabled: true },
+  { name: 'Турксибский район', disabled: true },
 ]

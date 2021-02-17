@@ -1,0 +1,121 @@
+.date_period_wrap {
+  position: relative;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  height: 30px;
+}
+.date_period_icon {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  display: none;
+}
+.date_period_icon.active {
+  display: flex;
+}
+.datepicker {
+  z-index: 9999;
+}
+.datepicker-here {
+  padding: 0 3px;
+  border-radius: 2px;
+  border: none;
+  background: rgba(255, 255, 255, 0.19);
+  color: white;
+  opacity: 1;
+}
+.calendar_icon.calendar {
+  display: none;
+}
+.calendar_icon.calendar.active {
+  display: flex;
+}
+
+.datepicker-here::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.56);
+}
+.datepicker-here::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.56);
+}
+.datepicker-here:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.56);
+}
+.datepicker-here:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.56);
+}
+.data_confirm.active {
+  display: flex;
+}
+.data_confirm {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 2px;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: bold;
+}
+.data_confirm > span:first-child {
+  padding-right: 5px;
+  font-size: 12px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+.calendar {
+  width: 33px;
+  height: 35px;
+  /* background-image: url('img/calendar.svg'); */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-top: 2px;
+  outline: 1px solid rgba(255, 255, 255, 0);
+}
+/* .calendar:hover {
+  background-image: url('img/calendar_darck.svg');
+} */
+.Datapicker {
+  display: none;
+}
+.Datapicker.active {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar_ok {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  width: 22px;
+  cursor: pointer;
+  margin: 0 5px 0 5px;
+  padding: 0 5px;
+  color: darkolivegreen;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0);
+}
+.calendar_ok:hover {
+  background: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #414e60;
+}
+.calendar_ok:active {
+  color: white;
+}
+.datepickers-container > div:first-child {
+  z-index: 10000;
+}
+
+li.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child.Ant_Drop_Block_Style_item.active_btn {
+  background-color: #0077b6;
+}

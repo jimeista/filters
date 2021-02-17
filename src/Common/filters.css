@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+.Filter_Btn_Item_Style_item span,
+.Filter_Dropdown_Style {
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+}
+[ant-click-animating-without-extra-node='true']::after{
+    box-shadow: none!important;
+}
+.Dropdown_style .ReactVirtualized__Grid.ReactVirtualized__List{
+    background: #61dafb;
+/*    padding: 0;
+    margin: 5px 0;*/
+
+}
+.Filter_Dropdown_Style{
+    background: #414e60;
+    border: 1px solid white;
+    border-radius: 2px;
+    color: white;
+}
+/*check box стили */
+.Filter_Checkbox_Container_Style{
+    padding: 5px 0;
+}
+.Filter_Items_Style{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.Filter_Items_Style.period_style{
+    flex-direction: column;
+}
+.Filter_Items_Style .ant-checkbox-checked .ant-checkbox-inner{
+    background-color: #ffffff;
+    border-color: #ffffff;
+
+}
+.Filter_Items_Style .ant-checkbox-inner{
+    background-color: #414e60;
+    border-color: #ffffff;
+
+}
+.Filter_Items_Style .ant-checkbox-checked .ant-checkbox-inner::after{
+display: none;
+}
+.ant-checkbox-checked::after,
+.Filter_List_Item_Style_inner .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.Filter_List_Item_Style_inner.ant-checkbox:hover .ant-checkbox-inner,
+.Filter_List_Item_Style_inner .ant-checkbox-input:focus +  .ant-checkbox-inner{
+    border-color: #ffffff;
+}
+/*input box стили */
+.Filter_Input_Item_Style input,
+.Filter_Input_Item_Style{
+    background: inherit;
+    color: white;
+    letter-spacing: 1px;
+    font-weight:300;
+}
+.Filter_Input_Item_Style.ant-input-affix-wrapper,
+.Filter_Input_Item_Style.ant-input-affix-wrapper:hover{
+    border-color: #ffffff;
+}
+
+.Filter_Input_Item_Style.ant-input-affix-wrapper:focus,
+.Filter_Input_Item_Style.ant-input-affix-wrapper-focused{
+    box-shadow:0 0 0 2px rgba(252, 253, 253, 0.2);
+}
+/*main button стили */
+.Filter_Main_Btn_Style{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 230px;
+    border-radius: 2px;
+    color: #ffffff;
+    background: inherit;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+.Filter_Main_Btn_Style.ant-btn:hover,
+.Filter_Main_Btn_Style.ant-btn:focus,
+.Filter_Main_Btn_Style.ant-btn:active{
+   background: inherit;
+}
+.Filter_Main_Btn_Style.ant-btn:hover,
+.Filter_Main_Btn_Style.ant-btn:focus {
+    color: #ffffff;
+    background: inherit;
+    border-color: #ffffff;
+}
+.Filter_Main_Btn_Style.ant-btn:active {
+    color: #ffffff;
+    background: inherit;
+    border-color: #ffffff;
+}
+/* button стили */
+.Filter_Btn_Style_Box{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+.Filter_Btn_Style_Box .ant-btn-primary{
+
+    color: #fff;
+    background: inherit;
+    border-color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0,0.12);
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0,0.05);
+    box-shadow: 0 2px 0 rgba(0, 0, 0,0.05);
+}
+.Filter_Btn_Style_Box .ant-btn-primary:hover{
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+    background: #ffffff20;
+
+}
+.Filter_Btn_Style_Box .ant-btn-primary:active{
+   color: #282c34;
+    background: #ffffff40;
+
+}
+/*Filter Time*/
+.Filter_Period_Time_title{
+    color: white;
+    align-self: flex-start;
+   /* margin-bottom: -10px;*/
+}
+.Filter_Period_Time_text{
+    font-size: 12px;
+    font-weight: normal;
+    color: #ffffff80;
+}
+.Filter_Items_Style .ant-slider-mark{
+    font-size: 10px;
+    padding: 0 5px;
+
+}
+.period_style .dropdown-menu-innerdiv{
+    width: 100%;
+    padding: 0 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.period_style .ant-slider.ant-slider-with-marks{
+    width: 85%;
+ color: white;
+    font-weight: 300;
+
+
+}
+.period_style .ant-slider-mark-text{
+    color: white;
+}
+/* put universal focus changes here */
+*:focus {
+    outline: none;
+}
+
+.Filter_Items_Style .ant-radio-inner {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-color: #414e60;
+    border-color: #d9d9d9;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.Filter_List_Item_Style .ant-radio-wrapper:hover .ant-radio,
+.Filter_List_Item_Style .ant-radio:hover .ant-radio-inner,
+.Filter_List_Item_Style .ant-radio-input:focus + .ant-radio-inner{
+    border-color: #ffffff;
+}
+.Filter_Items_Style .ant-radio .ant-radio-inner::after {
+
+    top: 5%;
+    left: 5%;
+
+    width: 85%;
+    height: 86%;
+    background-color: #ffffff;
+    border-top: 0;
+    border-left: 0;
+    border-radius: 2px;
+
+
+
+}
+.Filter_Items_Style .ant-radio-checked::after{
+    border-color: white;
+
+}
+.Filter_Items_Style .ant-radio-input:focus + .ant-radio-inner{
+    box-shadow: none;
+}
+/*FilterClear*/
+.FilterClear_wrapper{
+    width: 20px;
+    height: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -5px;
+
+}
+.FilterClear_wrapper:hover svg g path{
+    fill: #05446e;
+}
+.FilterClear_wrapper:active svg g path{
+    fill: white;
+}
